@@ -83,9 +83,11 @@ Then open `http://127.0.0.1:5178`.
 ## Video
 
 Use `docs/demo-video-script.md` for the 2-4 minute ETHGlobal video.
+Use `docs/video-capture-checklist.md` while recording so the sponsor proof points are visible.
 
 ## ETHGlobal Notes
 
 This repository is the public, from-scratch hackathon implementation for the submitted project. It may reference DreamNet concepts as inspiration, but code in this repo is written for this event repository.
 
 See `docs/ethglobal.md` for submission and AI-attribution notes.
+See `docs/submission-packet.md` for the live demo URL, GitHub repo, verification evidence, and booth checklist.
