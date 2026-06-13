@@ -20,6 +20,64 @@ Expected story:
 6. Store the receipt on Walrus.
 7. Open the Walrus read URL.
 
+## Example Inputs
+
+Use these if a judge asks whether the decision surface accepts anything besides the default.
+
+### Safe Approval Quorum
+
+```text
+Decision surface:
+Should DreamNet approve the public demo after CI is green, no wallet signing, no trading, and Walrus receipt storage verified?
+
+Market:
+Coordination
+
+Subject:
+ETHGlobal build decision
+
+Horizon:
+Sunday June 14 2026 9:00 AM EDT
+```
+
+Expected result: approve quorum, with execution still blocked.
+
+### Risk Hold Quorum
+
+```text
+Decision surface:
+Should the agent execute a live trade with user funds right now?
+
+Market:
+Agent safety
+
+Subject:
+Live fund movement
+
+Horizon:
+Immediate
+```
+
+Expected result: hold / no-action quorum.
+
+### Ambiguous Split
+
+```text
+Decision surface:
+Is the market structure interesting next week?
+
+Market:
+Research
+
+Subject:
+Market structure
+
+Horizon:
+Next week
+```
+
+Expected result: no 28-of-31 quorum, so the receipt remains no-action research.
+
 ## Fast Live Endpoint Checks
 
 Run from PowerShell:
@@ -122,4 +180,3 @@ pnpm build
 pnpm exec wrangler deploy --dry-run
 gh run list --repo BrandonDucar/dreamnet-quorum-lab-ethnyc --limit 3
 ```
-

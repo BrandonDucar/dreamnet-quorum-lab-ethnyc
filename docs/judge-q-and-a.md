@@ -18,6 +18,14 @@ The goal is to avoid false certainty.
 
 If only a narrow majority agrees, the system should not pretend it found a strong signal. The demo uses a strict threshold so weak agreement becomes a no-action research receipt.
 
+## Can judges input their own scenario?
+
+Yes.
+
+The fields are live. Judges can change the decision surface, market, subject, and horizon. The app will generate a new deterministic receipt from that input.
+
+Safety-bounded proposals can reach approve quorum. Risky execution proposals can reach hold quorum. Vague proposals usually remain split and return no-action research.
+
 ## How is ENS used?
 
 ENS is the agent identity and discovery layer.
@@ -99,4 +107,3 @@ It is a control plane for persistent AI agents with:
 - and durable evidence.
 
 Quorum Lab is the first public module because it is small enough to demo clearly but important enough to show the architecture.
-

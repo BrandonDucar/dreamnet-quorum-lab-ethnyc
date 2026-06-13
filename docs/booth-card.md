@@ -50,6 +50,16 @@ Walrus stores the receipt so the decision artifact can be retrieved and verified
 4. Resolve `vitalik.eth`.
 5. Store receipt on Walrus.
 
+## If A Judge Wants To Type Something
+
+Use:
+
+```text
+Should DreamNet approve the public demo after CI is green, no wallet signing, no trading, and Walrus receipt storage verified?
+```
+
+This should produce an approve quorum while keeping execution blocked.
+
 ## Ask At ENS Booth
 
 ```text
@@ -73,4 +83,3 @@ For a receipt-gated agent system, should I frame World as trial gating, contribu
 ```text
 What is the strongest way to frame Walrus here: receipt archive, agent evidence layer, or decentralized audit log?
 ```
-

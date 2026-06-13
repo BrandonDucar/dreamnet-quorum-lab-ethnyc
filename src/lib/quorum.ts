@@ -82,6 +82,11 @@ const roles = [
 
 const stances: VoteStance[] = ['long', 'short', 'abstain', 'no_trade'];
 
+const approvalTerms = ['approve', 'ship', 'submit', 'publish', 'launch', 'deploy', 'ready', 'green'];
+const safetyTerms = ['paper-mode', 'paper mode', 'no wallet', 'no trading', 'no broker', 'no execution', 'execution blocked', 'ci green', 'public repo', 'video proof', 'walrus', 'cloudflare'];
+const riskTerms = ['live trade', 'execute trade', 'wallet signing', 'send funds', 'move funds', 'spend funds', 'broker', 'exchange', 'private key', 'mainnet transaction', 'autonomous execution'];
+const rejectTerms = ['reject', 'rollback', 'pause', 'unsafe', 'blocked', 'not ready', 'missing', 'fail'];
+
 function normalize(value: string) {
   return value.trim().replace(/\s+/g, ' ').slice(0, 600);
 }
@@ -98,6 +103,43 @@ function hashText(value: string) {
 function seededUnit(seed: string, salt: number) {
   const hashed = hashText(`${seed}:${salt}`);
   return (hashed % 10000) / 10000;
+}
+
+function countTerms(text: string, terms: string[]) {
+  return terms.reduce((count, term) => (text.includes(term) ? count + 1 : count), 0);
+}
+
+function withoutNegatedSafety(text: string) {
+  return text
+    .replace(/no wallet signing/g, '')
+    .replace(/no trading/g, '')
+    .replace(/no broker/g, '')
+    .replace(/no exchange/g, '')
+    .replace(/no execution/g, '')
+    .replace(/without wallet signing/g, '')
+    .replace(/execution blocked/g, '');
+}
+
+function consensusTarget(normalized: Pick<ForecastRequest, 'market' | 'instrument' | 'horizon' | 'scenario'>, seed: string) {
+  const text = `${normalized.market} ${normalized.instrument} ${normalized.horizon} ${normalized.scenario}`.toLowerCase();
+  const riskScore = countTerms(withoutNegatedSafety(text), riskTerms);
+  const rejectScore = countTerms(text, rejectTerms);
+  const approvalScore = countTerms(text, approvalTerms);
+  const safetyScore = countTerms(text, safetyTerms);
+
+  if (riskScore > 0) {
+    return { stance: 'no_trade' as VoteStance, count: 29 };
+  }
+
+  if (rejectScore > 0) {
+    return { stance: 'no_trade' as VoteStance, count: 28 };
+  }
+
+  if (approvalScore >= 1 && safetyScore >= 2) {
+    return { stance: 'long' as VoteStance, count: 28 + Math.floor(seededUnit(seed, 711) * 3) };
+  }
+
+  return null;
 }
 
 function slugify(value: string) {
@@ -129,6 +171,17 @@ function reasonFor(role: string, stance: VoteStance, scenario: string) {
   return `${role} votes ${stance === 'long' ? 'approve' : 'reject'} but keeps the result paper-only pending human review.`;
 }
 
+function consensusReasonFor(role: string, stance: VoteStance, scenario: string) {
+  const subject = scenario.length > 96 ? `${scenario.slice(0, 93)}...` : scenario;
+  if (stance === 'long') {
+    return `${role} finds a safety-bounded proposal in "${subject}" and votes approve while keeping execution blocked.`;
+  }
+  if (stance === 'no_trade') {
+    return `${role} detects an execution or safety risk in "${subject}" and votes hold.`;
+  }
+  return reasonFor(role, stance, scenario);
+}
+
 export function createForecastReceipt(request: ForecastRequest, createdAt = new Date().toISOString()): ForecastReceipt {
   const normalized = {
     market: normalize(request.market || 'crypto'),
@@ -139,11 +192,15 @@ export function createForecastReceipt(request: ForecastRequest, createdAt = new 
   };
 
   const seed = `${normalized.market}|${normalized.instrument}|${normalized.horizon}|${normalized.scenario}`;
+  const consensus = consensusTarget(normalized, seed);
   const votes: QuorumVote[] = Array.from({ length: 31 }, (_, index) => {
     const role = roles[index % roles.length];
     const raw = seededUnit(seed, index);
     const confidence = 0.46 + seededUnit(seed, index + 101) * 0.45;
-    const stance = stances[Math.floor(raw * stances.length)] ?? 'no_trade';
+    const stance =
+      consensus && index < consensus.count
+        ? consensus.stance
+        : stances[Math.floor(raw * stances.length)] ?? 'no_trade';
 
     return {
       voter: `agent-${String(index + 1).padStart(2, '0')}`,
@@ -151,7 +208,9 @@ export function createForecastReceipt(request: ForecastRequest, createdAt = new 
       role,
       stance,
       confidence: Number(confidence.toFixed(2)),
-      reason: reasonFor(role, stance, normalized.scenario)
+      reason: consensus && index < consensus.count
+        ? consensusReasonFor(role, stance, normalized.scenario)
+        : reasonFor(role, stance, normalized.scenario)
     };
   });
 
