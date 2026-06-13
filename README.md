@@ -80,6 +80,8 @@ Then open `http://127.0.0.1:5178`.
 4. Confirm execution remains blocked in paper mode.
 5. Export or copy the receipt for review.
 
+Use `docs/demo-rehearsal-runbook.md` for live endpoint checks and Wi-Fi fallback commands.
+
 ## Video
 
 Use `docs/demo-video-script.md` for the 2-4 minute ETHGlobal video.
