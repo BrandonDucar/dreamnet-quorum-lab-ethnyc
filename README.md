@@ -81,6 +81,7 @@ Then open `http://127.0.0.1:5178`.
 5. Export or copy the receipt for review.
 
 Use `docs/demo-rehearsal-runbook.md` for live endpoint checks and Wi-Fi fallback commands.
+Use `docs/booth-card.md` for the 45-second in-person pitch.
 
 ## Video
 
