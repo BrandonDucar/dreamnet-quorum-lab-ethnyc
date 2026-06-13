@@ -58,7 +58,7 @@ export type ForecastReceipt = {
     registrySize: 34012;
     resolutionMode: 'live_ens_resolver_ready';
     humanGate: 'world_id_ready_operator_approval';
-    settlementLane: 'sui_receipt_object_ready';
+    settlementLane: 'walrus_receipt_storage_ready';
   };
   lineage: {
     engine: 'dreamnet-quorum-lab';
@@ -210,13 +210,13 @@ export function createForecastReceipt(request: ForecastRequest, createdAt = new 
       registrySize: 34012,
       resolutionMode: 'live_ens_resolver_ready',
       humanGate: 'world_id_ready_operator_approval',
-      settlementLane: 'sui_receipt_object_ready'
+      settlementLane: 'walrus_receipt_storage_ready'
     },
     lineage: {
       engine: 'dreamnet-quorum-lab',
       receiptHash,
       sourcePolicy: 'user scenario plus deterministic local specialist fixture',
-      createdFrom: ['scenario-input', 'ens-agent-identity', 'world-human-gate', 'sui-receipt-lane', '31-agent-quorum', 'risk-gate']
+      createdFrom: ['scenario-input', 'ens-agent-identity', 'world-human-gate', 'walrus-receipt-storage', '31-agent-quorum', 'risk-gate']
     },
     votes
   };

@@ -71,7 +71,7 @@
 
   let market = 'Coordination';
   let instrument = 'ETHGlobal build decision';
-  let horizon = 'tonight';
+  let horizon = 'before the Sunday 9 AM submission deadline';
   let scenario =
     'Evaluate whether the swarm should ship the public Cloudflare demo with paper-mode receipts, public repo, and video proof.';
   let receipt: ForecastReceipt = createForecastReceipt({
