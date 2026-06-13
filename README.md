@@ -35,11 +35,12 @@ Build a judge-friendly demo that proves a simple idea:
 
 The app is intentionally small, but it maps to the larger product:
 
-- **ENS:** each agent vote carries an ENS-style name under `quorum.dreamnet.eth`, designed to scale to the 34,012-agent registry.
-- **World:** receipts include a human approval gate so future actions can require proof that a real operator approved them.
+- **ENS:** the app includes a live ENS resolver for agent identity and discovery, plus a namespace plan for the 34,012-agent registry.
+- **World:** the app includes backend World ID proof validation endpoints and a human approval gate for scarce or risky agent actions.
+- **Sui / Walrus:** the app can store quorum receipts as Walrus Testnet blobs and verify read-back hashes.
 - **Google for Startups:** the startup story is the Agent OS control plane: identity, memory, governance, observability, and receipts for large agent fleets.
 
-See `docs/agent-os-roadmap.md` for the sponsor and accelerator framing.
+See `docs/agent-os-roadmap.md` for the sponsor and accelerator framing, and `docs/ens-world-activation.md` for the exact ENS + World activation path.
 
 ## Local Setup
 
@@ -63,6 +64,12 @@ Then open `http://127.0.0.1:5178`.
 
 - `GET /api/health` returns service mode and safety status.
 - `POST /api/forecast` returns a paper-mode quorum receipt.
+- `GET /api/ens/resolve?name=<ens-name>` resolves live ENS records.
+- `GET /api/world/config` returns World gate configuration status.
+- `POST /api/world/rp-signature` creates a server-side World ID request signature when secrets are configured.
+- `POST /api/world/verify` validates IDKit proofs in the backend.
+- `GET /api/walrus/config` returns Walrus Testnet publisher/aggregator config.
+- `POST /api/walrus/store-receipt` stores a receipt JSON blob and verifies read-back hash.
 - `/api/execute/*` returns `403 execution_blocked`.
 
 ## Demo Flow

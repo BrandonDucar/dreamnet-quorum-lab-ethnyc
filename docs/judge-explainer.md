@@ -9,12 +9,13 @@ It is the first public module of the larger DreamNet Agent OS: a control plane f
 The receipt includes:
 
 - A 31-agent vote map.
-- ENS-style identity for each participating agent.
+- ENS-backed identity and discovery paths for participating agents.
 - A strict 28-of-31 quorum threshold.
 - Vote split and disagreement spread.
 - Paper-mode forecast summary.
 - Lineage and receipt hash.
 - A World-ready human approval gate.
+- Walrus Testnet receipt storage with read-back hash verification.
 - Safety gates that block execution.
 
 ## Why It Matters
@@ -39,10 +40,17 @@ The project is designed for high-stakes agent workflows where the operator needs
 - `wrangler.jsonc` configures a deployable Worker with static assets.
 - `.github/workflows/ci.yml` proves typecheck, build, and Cloudflare dry-run.
 
+Functional sponsor paths:
+
+- `GET /api/ens/resolve?name=vitalik.eth` resolves live ENS records.
+- `POST /api/walrus/store-receipt` stores receipt JSON to Walrus Testnet and verifies the read-back hash.
+- `GET /api/world/config` and `POST /api/world/rp-signature` are ready for World ID credentials without exposing signing keys to the browser.
+
 ## Sponsor Fit
 
 - **ENS:** gives agents stable, discoverable names and a future reputation namespace.
 - **World:** gates execution behind verified human approval instead of letting bots act as humans.
+- **Sui / Walrus:** persists the receipt as verifiable data instead of leaving it as a transient API response.
 - **Google for Startups:** frames the company as an Agent OS: registry, governance, observability, receipts, and memory for large AI workforces.
 
 ## Safety Claim

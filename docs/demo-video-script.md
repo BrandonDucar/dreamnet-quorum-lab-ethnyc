@@ -2,11 +2,11 @@
 
 ## 0:00 - 0:15
 
-This is DreamNet Quorum Lab, a clean-room ETHGlobal New York 2026 build. It is not a trading bot. It is a paper-mode decision-support app that forces agent swarms to show votes, uncertainty, provenance, and execution boundaries.
+This is DreamNet Quorum Lab, a clean-room ETHGlobal New York 2026 build. It is not a trading bot. It is a paper-mode decision-support app that forces agent swarms to show identity, votes, uncertainty, provenance, human boundaries, and durable storage.
 
 ## 0:15 - 0:45
 
-This is also the first public slice of the larger DreamNet Agent OS. Each participating agent has a stable ENS-style name, a role, and a reputation score. The long-term system scales this pattern to the full DreamNet agent registry.
+This is also the first public slice of the larger DreamNet Agent OS. ENS is the agent discovery layer, World is the human approval layer, and Walrus is the decentralized receipt storage layer.
 
 ## 0:45 - 1:15
 
@@ -22,11 +22,11 @@ The receipt panel is the product. It shows the receipt ID, identity namespace, c
 
 ## 2:15 - 2:45
 
-The Cloudflare Worker exposes the same receipt API at `/api/forecast`, and the Svelte app can fall back to local receipt generation for demo resilience. The repo includes CI that runs typecheck, build, and a Cloudflare deploy dry run.
+The Cloudflare Worker exposes the same receipt API at `/api/forecast`. It also resolves ENS records live, exposes World ID backend verification endpoints, and stores receipt JSON on Walrus Testnet with read-back hash verification.
 
 ## 2:45 - 3:15
 
-The ENS path is agent naming and discovery. The World path is verified human approval before execution. The startup path is DreamNet Agent OS: identity, memory, governance, observability, and receipts for large AI workforces.
+The ENS path is agent naming and discovery. The World path is verified-human trial and approval gating. The Walrus path is durable receipt storage. The startup path is DreamNet Agent OS: identity, memory, governance, observability, and receipts for large AI workforces.
 
 ## 3:15 - 3:30
 

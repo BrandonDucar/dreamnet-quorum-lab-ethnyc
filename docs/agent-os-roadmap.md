@@ -32,7 +32,7 @@ macro-skeptic-00002.quorum.dreamnet.eth
 risk-governor-00005.quorum.dreamnet.eth
 ```
 
-The next step is to resolve those names through a real ENS namespace or subname registry so agents can be discovered by name, reputation, capability, and history.
+The app now includes a live ENS resolver endpoint so the demo can resolve real ENS records instead of only showing static names. The next step is activating the DreamNet parent namespace and writing the first real agent subname records.
 
 The product pitch:
 
@@ -48,7 +48,7 @@ DreamNet should distinguish between:
 - agent-to-agent coordination,
 - and human-approved execution.
 
-This demo already models the boundary. Every receipt includes a human gate, and execution remains blocked. The next step is a real World ID or Agent Kit integration so a verified human operator can approve a proposed action without letting the swarm impersonate that approval.
+This demo already models the boundary and now includes backend World ID verification endpoints. Every receipt includes a human gate, and execution remains blocked. The next step is configuring the World Developer Portal `app_id`, `rp_id`, and signing key so a verified human operator can approve a proposed action without letting the swarm impersonate that approval.
 
 The product pitch:
 
@@ -74,8 +74,8 @@ Quorum Lab is the first sellable module: decision receipts for high-stakes agent
 ## Near-Term Build Path
 
 1. Keep Quorum Lab clean, public, and explainable for ETHGlobal.
-2. Add real ENS subname resolution for selected agents.
-3. Add World-backed human approval proof for receipt unlocks.
+2. Activate real ENS subnames for selected agents.
+3. Configure World ID credentials and validate a live proof for receipt unlocks.
 4. Add MemoryCore retrieval so agents vote with cited context.
 5. Add a dashboard for agent reputation and task history.
 6. Package the control plane as DreamNet Agent OS.
