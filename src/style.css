@@ -357,12 +357,20 @@ textarea:focus {
   border-color: var(--cyan);
 }
 
+.system-row.blue {
+  border-color: var(--blue);
+}
+
 .system-row.amber {
   border-color: var(--amber);
 }
 
 .system-row.violet {
   border-color: var(--violet);
+}
+
+.system-row.coral {
+  border-color: var(--coral);
 }
 
 .legend {
@@ -505,6 +513,11 @@ textarea:focus {
   background: rgba(167, 139, 250, 0.07);
 }
 
+.hash-box.blue {
+  border-color: rgba(66, 99, 255, 0.36);
+  background: rgba(66, 99, 255, 0.08);
+}
+
 .hash-box small,
 .hash-box code {
   display: block;
@@ -607,7 +620,7 @@ dd {
 
 .proof-strip {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 14px;
   margin: 14px 0 36px;
 }

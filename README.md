@@ -6,6 +6,8 @@ Live demo: https://dreamnet-quorum-lab-ethnyc.dreamnet-intel.workers.dev
 
 DreamNet Quorum Lab is a paper-mode decision-support app for agent swarms. A user submits a market or research scenario, thirty-one simulated specialist agents vote, and the app produces a forecast receipt that shows quorum strength, disagreement, provenance, and safety gates.
 
+This is the public hackathon wedge for the larger DreamNet Agent OS. The full system gives persistent agents names, reputation, memory, permissions, and receipts. This repo demonstrates the smallest judge-friendly primitive: ENS-style agent identities making a quorum decision that cannot execute without a human gate.
+
 The project is intentionally not a trading bot:
 
 - No broker integration.
@@ -25,7 +27,19 @@ Build a judge-friendly demo that proves a simple idea:
 - Svelte + Vite for the app.
 - Cloudflare Worker for the forecast receipt API.
 - TypeScript throughout.
+- ENS-compatible demo namespace for agent identities.
+- World-ready human approval gate in the receipt model.
 - Public GitHub repository with small, readable commits.
+
+## Agent OS Direction
+
+The app is intentionally small, but it maps to the larger product:
+
+- **ENS:** each agent vote carries an ENS-style name under `quorum.dreamnet.eth`, designed to scale to the 34,012-agent registry.
+- **World:** receipts include a human approval gate so future actions can require proof that a real operator approved them.
+- **Google for Startups:** the startup story is the Agent OS control plane: identity, memory, governance, observability, and receipts for large agent fleets.
+
+See `docs/agent-os-roadmap.md` for the sponsor and accelerator framing.
 
 ## Local Setup
 

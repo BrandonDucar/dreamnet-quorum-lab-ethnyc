@@ -33,9 +33,12 @@
 
   const systemRows = [
     ['Agent ring', '31 / 31 online', 'green'],
+    ['Agent OS', '34,012 registry', 'blue'],
+    ['Identity layer', 'ENS-style names', 'violet'],
+    ['Human gate', 'World-ready', 'coral'],
     ['Receipt API', 'Cloudflare-ready', 'cyan'],
     ['Execution mode', 'Paper only', 'amber'],
-    ['Public repo', 'Live', 'violet']
+    ['Public repo', 'Live', 'green']
   ];
 
   function pct(value: number) {
@@ -131,7 +134,7 @@
       <h1>31 agents vote. One receipt proves the boundary.</h1>
     </div>
     <p>
-      DreamNet Quorum Lab turns swarm decisions into auditable receipts with quorum math, disagreement, lineage, and explicit execution locks.
+      DreamNet Quorum Lab is the public wedge for the Agent OS: ENS-style agent identity, quorum math, disagreement, lineage, and World-ready human approval before execution.
     </p>
   </section>
 
@@ -203,7 +206,7 @@
           <em>{pct(receipt.quorum.disagreementSpread)} spread</em>
         </div>
         {#each receipt.votes as vote, index}
-          <span class={stanceClass(vote)} style={nodeStyle(index)} title={`${vote.voter}: ${stanceLabels[vote.stance]}`}>
+          <span class={stanceClass(vote)} style={nodeStyle(index)} title={`${vote.identity.ensName}: ${stanceLabels[vote.stance]}`}>
             {index + 1}
           </span>
         {/each}
@@ -211,12 +214,13 @@
 
       <div class="signal-log">
         <div class="log-head">
-          <span>Recent signals</span>
-          <b>Live feed</b>
+          <span>ENS agent</span>
+          <b>Vote</b>
+          <em>Role</em>
         </div>
         {#each receipt.votes.slice(0, 5) as vote}
           <p>
-            <span>{vote.voter}</span>
+            <span>{vote.identity.ensName}</span>
             <b>{stanceLabels[vote.stance]}</b>
             <em>{vote.role}</em>
           </p>
@@ -238,6 +242,10 @@
         <small>Receipt id</small>
         <code>{receipt.receiptId}</code>
       </div>
+      <div class="hash-box blue">
+        <small>Identity namespace</small>
+        <code>*.{receipt.identityLayer.namespace}</code>
+      </div>
 
       <dl class="receipt-grid">
         <div>
@@ -253,8 +261,16 @@
           <dd>Cloudflare</dd>
         </div>
         <div>
+          <dt>Registry</dt>
+          <dd>{receipt.identityLayer.registrySize.toLocaleString()} agents</dd>
+        </div>
+        <div>
           <dt>Execution</dt>
           <dd>Blocked</dd>
+        </div>
+        <div>
+          <dt>Human gate</dt>
+          <dd>World-ready</dd>
         </div>
       </dl>
 
@@ -288,12 +304,16 @@
       <b>Worker + static assets</b>
     </article>
     <article>
-      <span>GitHub</span>
-      <b>Public clean-room repo</b>
+      <span>ENS</span>
+      <b>Agent names + reputation</b>
     </article>
     <article>
-      <span>Video</span>
-      <b>Script ready</b>
+      <span>World</span>
+      <b>Human-backed approval gate</b>
+    </article>
+    <article>
+      <span>GitHub</span>
+      <b>Public clean-room repo</b>
     </article>
     <article>
       <span>Boundary</span>

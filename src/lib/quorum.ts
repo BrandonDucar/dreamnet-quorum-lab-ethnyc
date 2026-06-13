@@ -8,8 +8,16 @@ export type ForecastRequest = {
   clientRequestId: string;
 };
 
+export type AgentIdentity = {
+  agentId: string;
+  ensName: string;
+  reputationScore: number;
+  namespace: 'quorum.dreamnet.eth';
+};
+
 export type QuorumVote = {
   voter: string;
+  identity: AgentIdentity;
   role: string;
   stance: VoteStance;
   confidence: number;
@@ -44,6 +52,12 @@ export type ForecastReceipt = {
     liveTradingEnabled: false;
     humanApprovalRequired: true;
     notFinancialAdvice: true;
+  };
+  identityLayer: {
+    namespace: 'quorum.dreamnet.eth';
+    registrySize: 34012;
+    resolutionMode: 'ens_compatible_demo_namespace';
+    humanGate: 'world_id_ready_operator_approval';
   };
   lineage: {
     engine: 'dreamnet-quorum-lab';
@@ -85,6 +99,24 @@ function seededUnit(seed: string, salt: number) {
   return (hashed % 10000) / 10000;
 }
 
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function createAgentIdentity(index: number, role: string, seed: string): AgentIdentity {
+  const agentNumber = String(index + 1).padStart(5, '0');
+  const reputationScore = 700 + Math.round(seededUnit(seed, index + 301) * 299);
+  return {
+    agentId: `dn-agent-${agentNumber}`,
+    ensName: `${slugify(role)}-${agentNumber}.quorum.dreamnet.eth`,
+    reputationScore,
+    namespace: 'quorum.dreamnet.eth'
+  };
+}
+
 function reasonFor(role: string, stance: VoteStance, scenario: string) {
   const subject = scenario.length > 96 ? `${scenario.slice(0, 93)}...` : scenario;
   if (stance === 'no_trade') {
@@ -93,7 +125,7 @@ function reasonFor(role: string, stance: VoteStance, scenario: string) {
   if (stance === 'abstain') {
     return `${role} does not have enough bounded evidence to vote directionally.`;
   }
-  return `${role} votes ${stance} but keeps the result paper-only pending human review.`;
+  return `${role} votes ${stance === 'long' ? 'approve' : 'reject'} but keeps the result paper-only pending human review.`;
 }
 
 export function createForecastReceipt(request: ForecastRequest, createdAt = new Date().toISOString()): ForecastReceipt {
@@ -114,6 +146,7 @@ export function createForecastReceipt(request: ForecastRequest, createdAt = new 
 
     return {
       voter: `agent-${String(index + 1).padStart(2, '0')}`,
+      identity: createAgentIdentity(index, role, seed),
       role,
       stance,
       confidence: Number(confidence.toFixed(2)),
@@ -171,11 +204,17 @@ export function createForecastReceipt(request: ForecastRequest, createdAt = new 
       humanApprovalRequired: true,
       notFinancialAdvice: true
     },
+    identityLayer: {
+      namespace: 'quorum.dreamnet.eth',
+      registrySize: 34012,
+      resolutionMode: 'ens_compatible_demo_namespace',
+      humanGate: 'world_id_ready_operator_approval'
+    },
     lineage: {
       engine: 'dreamnet-quorum-lab',
       receiptHash,
       sourcePolicy: 'user scenario plus deterministic local specialist fixture',
-      createdFrom: ['scenario-input', '31-agent-quorum', 'risk-gate']
+      createdFrom: ['scenario-input', 'ens-style-agent-identity', '31-agent-quorum', 'risk-gate']
     },
     votes
   };
