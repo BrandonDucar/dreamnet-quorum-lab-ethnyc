@@ -2,6 +2,8 @@
 
 Clean-room ETHGlobal New York 2026 build.
 
+Live demo: https://dreamnet-quorum-lab-ethnyc.dreamnet-intel.workers.dev
+
 DreamNet Quorum Lab is a paper-mode decision-support app for agent swarms. A user submits a market or research scenario, thirty-one simulated specialist agents vote, and the app produces a forecast receipt that shows quorum strength, disagreement, provenance, and safety gates.
 
 The project is intentionally not a trading bot:
