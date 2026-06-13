@@ -12,3 +12,6 @@ test-results/
 .DS_Store
 Thumbs.db
 *.log
+artifacts/video/*.mp4
+artifacts/video/*.mov
+artifacts/video/*.webm
