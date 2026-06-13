@@ -96,3 +96,4 @@ See `docs/ethglobal.md` for submission and AI-attribution notes.
 See `docs/submission-packet.md` for the live demo URL, GitHub repo, verification evidence, and booth checklist.
 See `docs/ethglobal-submission-copy.md` for paste-ready ETHGlobal project page copy.
 See `docs/judge-q-and-a.md` for likely judge questions and concise answers.
+See `docs/antigravity-handoff.md` for the companion-agent context and boundaries.
