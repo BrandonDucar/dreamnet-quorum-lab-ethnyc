@@ -14,6 +14,13 @@
     "not_found_handling": "single-page-application"
   },
   "vars": {
-    "APP_MODE": "paper"
+    "APP_MODE": "paper",
+    "ENS_AGENT_NAMESPACE": "quorum.dreamnet.eth",
+    "WALRUS_AGGREGATOR_URL": "https://aggregator.walrus-testnet.walrus.space",
+    "WALRUS_DELETABLE": "true",
+    "WALRUS_EPOCHS": "7",
+    "WALRUS_PUBLISHER_URL": "https://publisher.walrus-testnet.walrus.space",
+    "WORLD_ACTION_APPROVE": "approve-quorum-receipt",
+    "WORLD_VERIFY_BASE_URL": "https://developer.world.org"
   }
 }

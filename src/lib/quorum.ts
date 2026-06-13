@@ -56,8 +56,9 @@ export type ForecastReceipt = {
   identityLayer: {
     namespace: 'quorum.dreamnet.eth';
     registrySize: 34012;
-    resolutionMode: 'ens_compatible_demo_namespace';
+    resolutionMode: 'live_ens_resolver_ready';
     humanGate: 'world_id_ready_operator_approval';
+    settlementLane: 'sui_receipt_object_ready';
   };
   lineage: {
     engine: 'dreamnet-quorum-lab';
@@ -207,14 +208,15 @@ export function createForecastReceipt(request: ForecastRequest, createdAt = new 
     identityLayer: {
       namespace: 'quorum.dreamnet.eth',
       registrySize: 34012,
-      resolutionMode: 'ens_compatible_demo_namespace',
-      humanGate: 'world_id_ready_operator_approval'
+      resolutionMode: 'live_ens_resolver_ready',
+      humanGate: 'world_id_ready_operator_approval',
+      settlementLane: 'sui_receipt_object_ready'
     },
     lineage: {
       engine: 'dreamnet-quorum-lab',
       receiptHash,
       sourcePolicy: 'user scenario plus deterministic local specialist fixture',
-      createdFrom: ['scenario-input', 'ens-style-agent-identity', '31-agent-quorum', 'risk-gate']
+      createdFrom: ['scenario-input', 'ens-agent-identity', 'world-human-gate', 'sui-receipt-lane', '31-agent-quorum', 'risk-gate']
     },
     votes
   };
