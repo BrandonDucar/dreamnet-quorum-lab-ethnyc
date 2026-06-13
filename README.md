@@ -25,6 +25,30 @@ Build a judge-friendly demo that proves a simple idea:
 - TypeScript throughout.
 - Public GitHub repository with small, readable commits.
 
+## Local Setup
+
+```powershell
+pnpm install
+pnpm check
+pnpm build
+pnpm exec wrangler deploy --dry-run
+```
+
+Run the app and Worker in separate terminals:
+
+```powershell
+pnpm worker:dev
+pnpm dev
+```
+
+Then open `http://127.0.0.1:5178`.
+
+## API
+
+- `GET /api/health` returns service mode and safety status.
+- `POST /api/forecast` returns a paper-mode quorum receipt.
+- `/api/execute/*` returns `403 execution_blocked`.
+
 ## Demo Flow
 
 1. Enter a scenario.
@@ -32,6 +56,10 @@ Build a judge-friendly demo that proves a simple idea:
 3. Inspect vote split, disagreement, confidence, and lineage.
 4. Confirm execution remains blocked in paper mode.
 5. Export or copy the receipt for review.
+
+## Video
+
+Use `docs/demo-video-script.md` for the 2-4 minute ETHGlobal video.
 
 ## ETHGlobal Notes
 
