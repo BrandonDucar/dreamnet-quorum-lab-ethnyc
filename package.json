@@ -1,0 +1,30 @@
+{
+  "name": "dreamnet-quorum-lab-ethnyc",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite --port 5178",
+    "build": "vite build",
+    "preview": "vite preview --port 4178",
+    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json && tsc -p tsconfig.worker.json",
+    "worker:dev": "wrangler dev worker/index.ts --local --port 8787",
+    "worker:deploy": "wrangler deploy",
+    "worker:check": "wrangler check"
+  },
+  "dependencies": {
+    "@sveltejs/vite-plugin-svelte": "^6.2.1",
+    "@tsconfig/svelte": "^5.0.8",
+    "@types/node": "^24.1.0",
+    "svelte": "^5.56.2",
+    "svelte-check": "^4.4.8",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.5",
+    "wrangler": "^4.87.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260612.0"
+  },
+  "packageManager": "pnpm@10.21.0"
+}
