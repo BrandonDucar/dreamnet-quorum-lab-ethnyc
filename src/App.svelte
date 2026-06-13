@@ -35,6 +35,12 @@
       uses: number;
       enforcedBy: string;
     };
+    receiptGate: {
+      flow: string;
+      signal: string;
+      approvalAction: string;
+      replayPolicy: string;
+    };
     purpose: string;
   };
 
@@ -92,7 +98,7 @@
   let ensBusy = false;
   let worldConfig: WorldConfig | null = null;
   let worldBusy = false;
-  let worldStatus = 'World ID proof required before any future receipt can cross the execution boundary.';
+  let worldStatus = 'World ID Proof of Human required before any future receipt can cross the execution boundary.';
   let worldConnectUrl = '';
   let worldVerified = false;
   let walrusResult: WalrusStoreResult | null = null;
@@ -587,8 +593,9 @@
       <div class="world-copy">
         <h2>World does not name the agent. World proves a real human approved the escalation.</h2>
         <p>
-          The backend exposes <code>/api/world/rp-signature</code> and <code>/api/world/verify</code>. Once the World Developer Portal
-          <code>rp_id</code>, <code>app_id</code>, and signing key are set as Cloudflare secrets, this button verifies IDKit proofs before any receipt crosses the execution boundary.
+          The backend exposes <code>/api/world/rp-signature</code> and <code>/api/world/verify</code>. The proof flow is receipt-gated:
+          the current <code>receiptId</code> becomes the World signal, the action is <code>approve-quorum-receipt</code>, and the backend verifies
+          Proof of Human before any future receipt crosses the execution boundary.
         </p>
       </div>
 
@@ -607,6 +614,7 @@
       <div class="record-stack">
         <p><span>Action</span><code>{worldConfig?.action || 'approve-quorum-receipt'}</code></p>
         <p><span>Credential</span><code>{worldConfig?.credential || 'proof-of-human'}</code></p>
+        <p><span>Signal</span><code>{worldConfig?.receiptGate?.signal || 'receiptId'} = {receipt.receiptId}</code></p>
         <p><span>Trial</span><code>{worldConfig?.trial ? `${worldConfig.trial.uses} verified-human uses` : '3 verified-human uses'}</code></p>
         <p><span>RP ID</span><code>{worldConfig?.rpId || 'not set'}</code></p>
         <p><span>Purpose</span><code>{worldConfig?.purpose || 'Human approval for agent action boundary.'}</code></p>

@@ -108,7 +108,13 @@ function worldConfig(env: Env) {
       uses: 3,
       enforcedBy: 'World ID nullifier per action'
     },
-    purpose: 'Verify that a real human operator approved a quorum receipt boundary crossing.'
+    receiptGate: {
+      flow: 'IDKit Proof of Human approval',
+      signal: 'receiptId',
+      approvalAction: action,
+      replayPolicy: 'Store nullifier_hash per action and receipt before enabling any future boundary crossing.'
+    },
+    purpose: 'Verify that one unique human approved a quorum receipt boundary crossing.'
   };
 }
 

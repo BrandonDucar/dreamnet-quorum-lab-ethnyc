@@ -97,3 +97,4 @@ See `docs/submission-packet.md` for the live demo URL, GitHub repo, verification
 See `docs/ethglobal-submission-copy.md` for paste-ready ETHGlobal project page copy.
 See `docs/judge-q-and-a.md` for likely judge questions and concise answers.
 See `docs/antigravity-handoff.md` for the companion-agent context and boundaries.
+See `docs/world-receipt-proof-flow.md` for the exact World ID receipt-gated proof flow.
