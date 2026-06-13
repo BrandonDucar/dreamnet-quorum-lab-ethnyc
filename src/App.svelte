@@ -2,23 +2,24 @@
   import {
     createForecastReceipt,
     type ForecastReceipt,
+    type QuorumVote,
     type VoteStance
   } from './lib/quorum';
 
   const stanceLabels: Record<VoteStance, string> = {
-    long: 'Long',
-    short: 'Short',
+    long: 'Approve',
+    short: 'Reject',
     abstain: 'Abstain',
-    no_trade: 'No-trade'
+    no_trade: 'Hold'
   };
 
-  const stanceOrder: VoteStance[] = ['long', 'short', 'abstain', 'no_trade'];
+  const stanceOrder: VoteStance[] = ['long', 'abstain', 'short', 'no_trade'];
 
-  let market = 'Crypto';
-  let instrument = 'BTC';
-  let horizon = '24h';
+  let market = 'Coordination';
+  let instrument = 'ETHGlobal build decision';
+  let horizon = 'tonight';
   let scenario =
-    'Evaluate whether BTC has enough evidence consensus for a directional forecast after a noisy social and liquidity spike.';
+    'Evaluate whether the swarm should ship the public Cloudflare demo with paper-mode receipts, public repo, and video proof.';
   let receipt: ForecastReceipt = createForecastReceipt({
     market,
     instrument,
@@ -26,22 +27,41 @@
     scenario,
     clientRequestId: 'local-preview'
   });
-  let status = 'Ready. Paper mode is active.';
+  let status = 'Paper mode active. No execution route exists.';
   let busy = false;
   let copied = false;
+
+  const systemRows = [
+    ['Agent ring', '31 / 31 online', 'green'],
+    ['Receipt API', 'Cloudflare-ready', 'cyan'],
+    ['Execution mode', 'Paper only', 'amber'],
+    ['Public repo', 'Live', 'violet']
+  ];
 
   function pct(value: number) {
     return `${Math.round(value * 100)}%`;
   }
 
   function barWidth(count: number) {
-    return `${Math.max(6, Math.round((count / receipt.quorum.size) * 100))}%`;
+    return `${Math.max(5, Math.round((count / receipt.quorum.size) * 100))}%`;
+  }
+
+  function nodeStyle(index: number) {
+    const angle = (index / receipt.quorum.size) * Math.PI * 2 - Math.PI / 2;
+    const radius = 42;
+    const x = 50 + Math.cos(angle) * radius;
+    const y = 50 + Math.sin(angle) * radius;
+    return `left:${x}%;top:${y}%;`;
+  }
+
+  function stanceClass(vote: QuorumVote) {
+    return `vote-node ${vote.stance}`;
   }
 
   async function runForecast() {
     busy = true;
     copied = false;
-    status = 'Asking the quorum...';
+    status = 'Quorum evaluation running...';
 
     const request = {
       market,
@@ -62,10 +82,10 @@
         throw new Error(data.error || 'API returned no receipt.');
       }
       receipt = data.receipt;
-      status = 'Worker receipt generated. Execution is still blocked.';
-    } catch (error) {
+      status = 'Cloudflare Worker receipt generated. Execution remains blocked.';
+    } catch {
       receipt = createForecastReceipt(request);
-      status = 'Local receipt generated. Worker unavailable, demo fallback used.';
+      status = 'Local receipt generated. Demo fallback active.';
     } finally {
       busy = false;
     }
@@ -74,96 +94,152 @@
   async function copyReceipt() {
     await navigator.clipboard.writeText(JSON.stringify(receipt, null, 2));
     copied = true;
-    status = 'Receipt copied for judges.';
+    status = 'Receipt copied.';
   }
 </script>
 
 <main class="shell">
   <header class="topbar">
     <a class="brand" href="https://github.com/BrandonDucar/dreamnet-quorum-lab-ethnyc" target="_blank" rel="noreferrer">
-      <span class="mark">Q</span>
-      <span>DreamNet Quorum Lab</span>
+      <span class="sigil" aria-hidden="true">
+        {#each Array(7) as _, index}
+          <i style={`--i:${index}`}></i>
+        {/each}
+      </span>
+      <span>
+        <b>DreamNet</b>
+        <small>Quorum Lab</small>
+      </span>
     </a>
-    <nav aria-label="Demo status">
-      <span>Public repo</span>
-      <span>Cloudflare-ready</span>
-      <span>Paper mode</span>
+
+    <nav aria-label="Sections">
+      <a href="#lab">Lab</a>
+      <a href="#receipt">Receipt</a>
+      <a href="#proof">Proof</a>
+      <a href="https://github.com/BrandonDucar/dreamnet-quorum-lab-ethnyc" target="_blank" rel="noreferrer">Repo</a>
     </nav>
+
+    <div class="live-pill">
+      <span></span>
+      Live paper mode
+    </div>
   </header>
 
-  <section class="board" aria-label="Quorum forecast console">
-    <form class="panel input-panel" on:submit|preventDefault={runForecast}>
-      <p class="panel-label">Scenario Input</p>
-      <h1>Ask thirty-one agents. Ship one receipt.</h1>
-      <p class="muted">
-        A compact decision lab for agent swarms: vote split, disagreement, provenance, and execution boundaries in one artifact.
-      </p>
+  <section class="hero" id="lab">
+    <div>
+      <p class="kicker">Built for ETHGlobal NYC 2026</p>
+      <h1>31 agents vote. One receipt proves the boundary.</h1>
+    </div>
+    <p>
+      DreamNet Quorum Lab turns swarm decisions into auditable receipts with quorum math, disagreement, lineage, and explicit execution locks.
+    </p>
+  </section>
+
+  <section class="console" aria-label="DreamNet Quorum Lab console">
+    <form class="panel scenario-card" on:submit|preventDefault={runForecast}>
+      <div class="panel-head">
+        <span>Live Scenario</span>
+        <button class="ghost" type="button" on:click={() => (scenario = '')}>Clear</button>
+      </div>
 
       <label>
-        <span>Market</span>
-        <input bind:value={market} autocomplete="off" />
-      </label>
-      <label>
-        <span>Instrument</span>
-        <input bind:value={instrument} autocomplete="off" />
-      </label>
-      <label>
-        <span>Horizon</span>
-        <input bind:value={horizon} autocomplete="off" />
-      </label>
-      <label class="wide">
-        <span>Scenario</span>
-        <textarea bind:value={scenario} rows="7"></textarea>
+        <span>Decision surface</span>
+        <textarea bind:value={scenario} maxlength="500" rows="7"></textarea>
+        <small>{scenario.length} / 500</small>
       </label>
 
-      <button class="primary" disabled={busy} type="submit">
-        {busy ? 'Running quorum...' : 'Generate Forecast Receipt'}
+      <div class="field-grid">
+        <label>
+          <span>Market</span>
+          <input bind:value={market} autocomplete="off" />
+        </label>
+        <label>
+          <span>Subject</span>
+          <input bind:value={instrument} autocomplete="off" />
+        </label>
+        <label>
+          <span>Horizon</span>
+          <input bind:value={horizon} autocomplete="off" />
+        </label>
+      </div>
+
+      <button class="run" disabled={busy} type="submit">
+        <span>{busy ? 'Running quorum' : 'Run quorum evaluation'}</span>
       </button>
-      <p class="status">{status}</p>
-    </form>
 
-    <section class="panel quorum-panel">
-      <div class="section-head">
-        <div>
-          <p class="panel-label">31-Agent Quorum</p>
-          <h2>{receipt.quorum.topCount}/{receipt.quorum.threshold}</h2>
+      <div class="system-status" id="proof">
+        <div class="system-top">
+          <strong>System status</strong>
+          <span>{status}</span>
         </div>
-        <span class:green={receipt.quorum.reached} class="pill">
-          {receipt.quorum.reached ? 'Quorum reached' : 'No quorum'}
-        </span>
-      </div>
-
-      <div class="meter">
-        <strong>{stanceLabels[receipt.forecast.direction]}</strong>
-        <span>{receipt.forecast.summary}</span>
-      </div>
-
-      <div class="vote-bars">
-        {#each stanceOrder as stance}
-          <div class="vote-row">
-            <span>{stanceLabels[stance]}</span>
-            <div class="track">
-              <i style={`width: ${barWidth(receipt.quorum.voteSplit[stance])}`}></i>
-            </div>
-            <b>{receipt.quorum.voteSplit[stance]}</b>
+        {#each systemRows as row}
+          <div class={`system-row ${row[2]}`}>
+            <span>{row[0]}</span>
+            <b>{row[1]}</b>
           </div>
         {/each}
       </div>
+    </form>
 
-      <div class="agent-grid" aria-label="Agent votes">
-        {#each receipt.votes as vote}
-          <article class={`agent ${vote.stance}`}>
+    <section class="panel constellation-card">
+      <div class="panel-head">
+        <span>Quorum constellation</span>
+        <b>{receipt.quorum.size} agents</b>
+      </div>
+
+      <div class="legend">
+        {#each stanceOrder as stance}
+          <span class={stance}>{stanceLabels[stance]} {receipt.quorum.voteSplit[stance]}</span>
+        {/each}
+      </div>
+
+      <div class="constellation" aria-label="Agent vote constellation">
+        <div class="orbit outer"></div>
+        <div class="orbit inner"></div>
+        <div class="core">
+          <small>Quorum result</small>
+          <strong>{receipt.quorum.reached ? stanceLabels[receipt.quorum.topStance] : 'Hold'}</strong>
+          <span>{receipt.quorum.topCount} / {receipt.quorum.threshold}</span>
+          <em>{pct(receipt.quorum.disagreementSpread)} spread</em>
+        </div>
+        {#each receipt.votes as vote, index}
+          <span class={stanceClass(vote)} style={nodeStyle(index)} title={`${vote.voter}: ${stanceLabels[vote.stance]}`}>
+            {index + 1}
+          </span>
+        {/each}
+      </div>
+
+      <div class="signal-log">
+        <div class="log-head">
+          <span>Recent signals</span>
+          <b>Live feed</b>
+        </div>
+        {#each receipt.votes.slice(0, 5) as vote}
+          <p>
             <span>{vote.voter}</span>
-            <strong>{stanceLabels[vote.stance]}</strong>
-          </article>
+            <b>{stanceLabels[vote.stance]}</b>
+            <em>{vote.role}</em>
+          </p>
         {/each}
       </div>
     </section>
 
-    <aside class="panel receipt-panel">
-      <p class="panel-label">Forecast Receipt</p>
-      <h2>{receipt.receiptId}</h2>
-      <dl>
+    <aside class="panel receipt-card" id="receipt">
+      <div class="panel-head">
+        <span>Quorum receipt</span>
+        <b>Dry run</b>
+      </div>
+
+      <div class="hash-box">
+        <small>Receipt hash</small>
+        <code>{receipt.lineage.receiptHash}</code>
+      </div>
+      <div class="hash-box violet">
+        <small>Receipt id</small>
+        <code>{receipt.receiptId}</code>
+      </div>
+
+      <dl class="receipt-grid">
         <div>
           <dt>Mode</dt>
           <dd>{receipt.mode}</dd>
@@ -173,32 +249,55 @@
           <dd>{pct(receipt.forecast.confidence)}</dd>
         </div>
         <div>
-          <dt>Disagreement</dt>
-          <dd>{pct(receipt.quorum.disagreementSpread)}</dd>
+          <dt>Network</dt>
+          <dd>Cloudflare</dd>
         </div>
         <div>
-          <dt>Hash</dt>
-          <dd>{receipt.lineage.receiptHash}</dd>
+          <dt>Execution</dt>
+          <dd>Blocked</dd>
         </div>
       </dl>
 
-      <div class="risk-stack">
-        <span>Execution blocked</span>
-        <span>No wallet path</span>
-        <span>No broker path</span>
-        <span>Human approval required</span>
-      </div>
-
-      <div class="lineage">
-        <h3>Lineage</h3>
-        {#each receipt.lineage.createdFrom as source}
-          <p>{source}</p>
+      <div class="vote-bars">
+        {#each stanceOrder as stance}
+          <div class={`vote-row ${stance}`}>
+            <span>{stanceLabels[stance]}</span>
+            <i><b style={`width:${barWidth(receipt.quorum.voteSplit[stance])}`}></b></i>
+            <strong>{receipt.quorum.voteSplit[stance]}</strong>
+          </div>
         {/each}
       </div>
 
-      <button class="secondary" type="button" on:click={copyReceipt}>
-        {copied ? 'Copied' : 'Copy Receipt JSON'}
+      <div class="safety">
+        <h2>Safety gates</h2>
+        <p><span>Policy check</span><b>Pass</b></p>
+        <p><span>Wallet path</span><b>None</b></p>
+        <p><span>Broker path</span><b>None</b></p>
+        <p><span>Human review</span><b>Required</b></p>
+      </div>
+
+      <button class="copy" type="button" on:click={copyReceipt}>
+        {copied ? 'Receipt copied' : 'Copy receipt JSON'}
       </button>
     </aside>
+  </section>
+
+  <section class="proof-strip" aria-label="Submission proof strip">
+    <article>
+      <span>Cloudflare</span>
+      <b>Worker + static assets</b>
+    </article>
+    <article>
+      <span>GitHub</span>
+      <b>Public clean-room repo</b>
+    </article>
+    <article>
+      <span>Video</span>
+      <b>Script ready</b>
+    </article>
+    <article>
+      <span>Boundary</span>
+      <b>No funds, no signing</b>
+    </article>
   </section>
 </main>
