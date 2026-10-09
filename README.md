@@ -98,3 +98,7 @@ See `docs/ethglobal-submission-copy.md` for paste-ready ETHGlobal project page c
 See `docs/judge-q-and-a.md` for likely judge questions and concise answers.
 See `docs/antigravity-handoff.md` for the companion-agent context and boundaries.
 See `docs/world-receipt-proof-flow.md` for the exact World ID receipt-gated proof flow.
+
+## License
+
+MIT. See [LICENSE](LICENSE). The existing MIT package declaration is retained. See [NOTICE](NOTICE) for attribution, licensing scope and third-party/media exclusions.
