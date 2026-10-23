@@ -22,7 +22,7 @@
     "svelte-check": "^4.4.8",
     "typescript": "^5.9.3",
     "viem": "^2.52.2",
-    "vite": "^7.3.5",
+    "vite": "^7.3.7",
     "wrangler": "^4.87.0"
   },
   "devDependencies": {
